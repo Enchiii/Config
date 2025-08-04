@@ -1,23 +1,41 @@
 import json
 import os
-from pydantic import Field
 from threading import Lock
 from typing import Any, Dict, Tuple, Type
+
 from pydantic import BaseModel, create_model
 
 
-def create_config(name: str, data: dict, root_path: str = "") -> Type[BaseModel]:
+def create_config_model(name: str, data: dict, root_path: str = "") -> Type[BaseModel]:
     fields: Dict[str, Tuple[Any, Any]] = {}
+
     for key, value in data.items():
         if isinstance(value, dict):
-            submodel = create_config(key.capitalize(), value, root_path)
-            fields[key] = (submodel, Field(...))
+            submodel = create_config_model(key.capitalize(), value, root_path)
+            fields[key] = (submodel, None)
         else:
-            fields[key] = (type(value), Field(...))
+            fields[key] = (type(value), None)
             if isinstance(value, str) and "_path" in key and root_path:
-                fields[f"full_{key}"] = (str, os.path.join(root_path, value))
+                full_key = f"full_{key}"
+                fields[full_key] = (str, None)
 
     return create_model(name, **fields)
+
+
+def instantiate_model(model_cls: Type[BaseModel], data: dict, root_path: str = "") -> BaseModel:
+    values: Dict[str, Any] = {}
+
+    for key, value in data.items():
+        if isinstance(value, dict):
+            submodel_cls = model_cls.__annotations__[key]
+            values[key] = instantiate_model(submodel_cls, value, root_path)
+        else:
+            values[key] = value
+            if isinstance(value, str) and "_path" in key and root_path:
+                full_key = f"full_{key}"
+                values[full_key] = os.path.join(root_path, value)
+
+    return model_cls(**values)
 
 
 class Config:
@@ -44,8 +62,8 @@ class Config:
         self._raw_data = data
         root = data.get("root", "")
 
-        ConfigModel = create_config("DynamicConfig", data, root)
-        self._config = ConfigModel(**data)
+        ConfigModel = create_config_model("DynamicConfig", data, root)
+        self._config = instantiate_model(ConfigModel, data, root)
 
         print(f"Loaded config from: '{json_path}'")
 
