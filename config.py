@@ -1,8 +1,9 @@
-from pydantic import BaseModel, create_model
-from typing import Any, Dict, Tuple, Type
 import json
 import os
+from pydantic import Field
 from threading import Lock
+from typing import Any, Dict, Tuple, Type
+from pydantic import BaseModel, create_model
 
 
 def create_config(name: str, data: dict, root_path: str = "") -> Type[BaseModel]:
@@ -10,9 +11,9 @@ def create_config(name: str, data: dict, root_path: str = "") -> Type[BaseModel]
     for key, value in data.items():
         if isinstance(value, dict):
             submodel = create_config(key.capitalize(), value, root_path)
-            fields[key] = (submodel, ...)
+            fields[key] = (submodel, Field(...))
         else:
-            fields[key] = (type(value), ...)
+            fields[key] = (type(value), Field(...))
             if isinstance(value, str) and "_path" in key and root_path:
                 fields[f"full_{key}"] = (str, os.path.join(root_path, value))
 
