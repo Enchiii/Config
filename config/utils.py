@@ -83,6 +83,9 @@ def resolve_vars_in_dict(data: dict, variables: dict, base_path: str = "") -> di
         if isinstance(v, dict):
             return {k: resolve_value(val) for k, val in v.items()}
 
+        elif isinstance(v, list):
+            return [resolve_value(item) for item in v]
+
         elif isinstance(v, str):
             if v.startswith("@"):
                 process_vars = True
