@@ -1,8 +1,6 @@
 # 🛠️ Config
 
-A **powerful, flexible, and minimalistic configuration system** for Python using JSON and Pydantic.
-
-It enables seamless variable resolution, path normalization, environment variable expansion, and easy integration of nested configuration files.
+A **minimalistic configuration system** for Python using JSON and Pydantic.
 
 ---
 
