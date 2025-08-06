@@ -83,4 +83,4 @@ config.set("sub.new_value", 123)
 
 ---
 
-[TODO] fix double "\" bug
+[TODO] fix double slash ("\\\\") bug
