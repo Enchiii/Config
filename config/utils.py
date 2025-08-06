@@ -75,8 +75,9 @@ def create_config(name: str, data: dict, root_path: str = "", progress_bar=None)
 
     return create_model(name, **fields)
 
+
 def resolve_vars_in_dict(data: dict, variables: dict, base_path: str = "") -> dict:
-    replacer = Replacer(variables)
+    replacer = Replacer(variables, data)
 
     def resolve_value(v):
         if isinstance(v, dict):
@@ -106,7 +107,6 @@ def resolve_vars_in_dict(data: dict, variables: dict, base_path: str = "") -> di
             return v
 
     return resolve_value(data)
-
 
 
 def load_child_config(path: str, process_vars: bool = True) -> dict:
