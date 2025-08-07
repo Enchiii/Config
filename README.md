@@ -22,16 +22,17 @@ conda install --file config_reqs.txt
 
 ## 🔣 Marker Reference
 
-| Marker | Syntax         | Description                                                                                 |
-|--------|----------------|---------------------------------------------------------------------------------------------|
-| `.`    | `base.var`     | Access nested config fields (usable within other markers)                                  |
-| `!`    | `!var!`        | Insert variable **directly**, without recursive resolution                                  |
-| `$`    | `$var$`        | Insert variable **with recursive** resolution                                               |
-| `%`    | `%var%`        | Insert variable as a **normalized path** (auto adds slashes and resolves structure)         |
-| `{}`   | `{ENV_VAR}`    | Insert environment variable (requires manual loading of environment into the process)       |
+| Marker | Syntax         | Description                                                                                              |
+|--------|----------------|----------------------------------------------------------------------------------------------------------|
+| `.`    | `base.var`     | Access nested config fields (usable within other markers)                                                |
+| `#`    | `"#info": ""`  | Add comment for clarity or documentation purposes; ignored during processing                             |
+| `!`    | `!var!`        | Insert variable **directly**, without recursive resolution                                               |
+| `$`    | `$var$`        | Insert variable **with recursive** resolution                                                            |
+| `%`    | `%var%`        | Insert variable as a **normalized path** (auto adds slashes and resolves structure)                      |
+| `{}`   | `{ENV_VAR}`    | Insert environment variable (requires manual loading of environment into the process)                    |
 | `[]`   | `var[index]`   | Access list element by index or dictionary value by key inside markers (e.g., `$arr[0]$`, `$dict[key]$`) |
-| `@`    | `@path.json`   | Import and merge external config file with **marker processing enabled**                    |
-| `@!`   | `@!path.json`  | Import and merge external config file as **raw JSON** (skips marker processing)             |
+| `@`    | `@path.json`   | Import and merge external config file with **marker processing enabled**                                 |
+| `@!`   | `@!path.json`  | Import and merge external config file as **raw JSON** (skips marker processing)                          |
 
 
 ---
@@ -82,3 +83,4 @@ config.set("sub.new_value", 123)
 ---
 
 [TODO] fix double slash ("\\\\") bug
+[TODO] add possibility to go up a config hierarchy in child configs by adding "^" marker**s** before a variable (like so: `$^var$` to go 1 up, or `$^^var$` to go 2 up and so on) 
