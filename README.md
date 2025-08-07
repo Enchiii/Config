@@ -75,6 +75,7 @@ config.set("sub.new_value", 123)
   "model_weights": ["weights-n.pt", "weights-s.pt", "weights-m.pt"],
   "default_weight": "$model_weights[1]$",
   "path_to_weight": "%sub.dirs[2]%/%default_weight%",
+  "#outer configs": "(this kv-pair is skipped)",
   "external_config": "@configs/extra.json",
   "raw_import": "@!configs/raw_extra.json"
 }
