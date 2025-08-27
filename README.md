@@ -83,5 +83,8 @@ config.set("sub.new_value", 123)
 
 ---
 
-[TODO] fix double slash ("\\\\") bug  
-[TODO] add possibility to go up a config hierarchy in child configs by adding "^" marker**s** before a variable (like so: `$^var$` to go 1 up, or `$^^var$` to go 2 up and so on) 
+> [!TODO]
+> fix double slash ("\\\\") bug
+
+> [!TODO]
+> add possibility to go up a config hierarchy in child configs by adding "^" marker**s** before a variable (like so: `$^var$` to go 1 up, or `$^^var$` to go 2 up and so on) 
